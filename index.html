@@ -1,0 +1,111 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Desafio JS</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right, #ff7e5f, #feb47b, #ffcca3);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        margin: 20px;
+        overflow: hidden;
+        width: calc(25% - 40px);
+        transition: transform 0.4s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-10px) rotate(2deg);
+      }
+
+      .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .card-content {
+        padding: 20px;
+        background-color: #fafafa;
+      }
+
+      .card-content h2 {
+        margin-top: 0;
+        color: #333;
+      }
+
+      .card-content p {
+        color: #666;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #fff;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Desafio JS: Fotos Random</h1>
+    <div class="container" id="app"></div>
+
+    <footer>
+      <p>Hecho con ❤️ por Santiago</p>
+    </footer>
+
+    <script>
+      async function fetchAndDisplayCards() {
+        try {
+          const response = await fetch(
+            "https://api.unsplash.com/photos/random?count=20&client_id=VFck2-Jj224SG2MWid47a6BFSNfmRVkLpPwb02mz6IM"
+          );
+          const data = await response.json();
+
+          const app = document.getElementById("app");
+
+          app.innerHTML = "";
+
+          data.forEach((photo) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.innerHTML = `
+            <img src="${photo.urls.regular}" alt="${photo.alt_description}">
+            <div class="card-content">
+              <h2>${photo.alt_description}</h2>
+              <p>Por: ${photo.user.name}</p>
+            </div>
+          `;
+            app.appendChild(card);
+          });
+        } catch (error) {
+          console.error("Error al obtener los datos:", error);
+        }
+      }
+
+      window.onload = fetchAndDisplayCards;
+    </script>
+  </body>
+</html>
